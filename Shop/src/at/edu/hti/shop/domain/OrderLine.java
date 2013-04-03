@@ -22,14 +22,13 @@ public class OrderLine {
 		return product;
 	}
 
-	public double calcPrize()
-	{
-		return amount*product.getPrize();
+	public double calcPrize() {
+		return amount * product.getPrize();
 	}
 
 	@Override
 	public String toString() {
 		return "OrderLine [" + product + ", " + amount + "]";
 	}
-	
+
 }

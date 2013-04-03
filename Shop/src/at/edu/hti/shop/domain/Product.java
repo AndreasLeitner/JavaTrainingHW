@@ -1,16 +1,20 @@
 package at.edu.hti.shop.domain;
 
 public class Product {
-	private String name;
-	private long id;
-	private double prize;
+	protected String name;
+	protected long id;
+	protected double prize;
+	protected int deliveryTime;
+	protected double weight;
 	
 
-	public Product( long id, String name, double prize) {
+	public Product( long id, String name, double prize, double weight, int deliveryTime ) {
 		super();
 		this.name = name;
 		this.id = id;
 		this.prize = prize;
+		this.weight = weight;
+		this.deliveryTime = deliveryTime;
 	}
 
 	public String getName() {
@@ -25,9 +29,21 @@ public class Product {
 		return prize;
 	}
 
+	public double getWeight() {
+	  return weight;
+  }
+
+	public int getDeliveryTime() {
+	  return deliveryTime;
+  }
+
+	public void setDeliveryTime(int deliveryTime) {
+	  this.deliveryTime = deliveryTime;
+  }
+
 	@Override
 	public String toString() {
-		return "Product [" + name + ", " + id + ", " + prize + "]";
+		return "Product [" + name + ", " + id + ", " + prize + ", " + weight + ", " + deliveryTime + "]";
 	}
 
 }
