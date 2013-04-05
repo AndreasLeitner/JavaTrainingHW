@@ -65,13 +65,11 @@ public class Order {
 	}
 
 	private void split() {
-//    shippingOrders.clear();
     splitStrategy.split(this);
 	}
 	
 	public double calcPrize() {
 		double price = 0;
-		split();
 		price = priceStrategy.calcPrice(this);
 		
 		return price;
