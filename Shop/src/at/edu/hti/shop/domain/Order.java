@@ -2,33 +2,35 @@ package at.edu.hti.shop.domain;
 
 import java.util.ArrayList;
 
-import at.edu.hti.shop.domain.specification.ISpecification;
-
 public class Order {
 
 	protected ArrayList<OrderLine> orderList = new ArrayList<OrderLine>();
 	protected ICalcPrice priceStrategy;
   private ISplitStrategy splitStrategy;
-  private ArrayList<SubOrder> subOrders;
+  private ArrayList<ShippingOrder> shippingOrders;
 
 	public Order() {
-	  subOrders = new ArrayList<SubOrder>();
+	  shippingOrders = new ArrayList<ShippingOrder>();
 	}
 	
 	public Order(ICalcPrice calcPriceStrategy, ISplitStrategy splitStrategy){
 		this.priceStrategy = calcPriceStrategy;
 		this.splitStrategy = splitStrategy;
-    subOrders = new ArrayList<SubOrder>();
+    shippingOrders = new ArrayList<ShippingOrder>();
 	}
 	
-  public SubOrder createSubOrder(){
-    SubOrder subOrder = new SubOrder(priceStrategy);
-    subOrders.add(subOrder);
+  public ShippingOrder createShippingOrder(){
+    ShippingOrder subOrder = new ShippingOrder(priceStrategy);
+    shippingOrders.add(subOrder);
     return subOrder;
   }
 	
 	public ArrayList<OrderLine> getLines() {
 	  return orderList;
+	}
+	
+	public ArrayList<ShippingOrder> getShippingOrders() {
+	  return shippingOrders;
 	}
 	
 	public boolean add(OrderLine e) {
@@ -62,16 +64,14 @@ public class Order {
 		}
 	}
 
-	protected void split() {
-	  splitStrategy.split(this);
+	private void split() {
+//    shippingOrders.clear();
+    splitStrategy.split(this);
 	}
-	
 	
 	public double calcPrize() {
 		double price = 0;
-
 		split();
-		
 		price = priceStrategy.calcPrice(this);
 		
 		return price;
@@ -79,8 +79,8 @@ public class Order {
 
 	@Override
 	public String toString() {
-	  split();
-	  return subOrders.toString() + " \n Total price =>" + calcPrize();
+    split();
+	  return shippingOrders.toString() + " \n Total price =>" + calcPrize();
 	}
 	
 	public double getWeight() {
@@ -89,5 +89,10 @@ public class Order {
 	    weight = weight+ol.getProduct().getWeight();
 	  }
 	  return weight;
+	}
+	
+	public void setSplittingStrategy(ISplitStrategy strategy) {
+	  this.splitStrategy = strategy;
+	  shippingOrders.clear();
 	}
 }

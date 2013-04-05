@@ -1,11 +1,12 @@
 package at.edu.hti.shop.domain;
 
-public class SubOrder extends Order {
+public class ShippingOrder extends Order {
 
-	public SubOrder(ICalcPrice priceStrategy){
+	public ShippingOrder(ICalcPrice priceStrategy){
 		this.priceStrategy = priceStrategy;
 	}
 	
+	@Override
 	public double calcPrize() {
 	
 	  return priceStrategy.calcPrice(this);
@@ -13,8 +14,9 @@ public class SubOrder extends Order {
 	
 	@Override
 	public String toString() {
-
-		return "SubOrder [" +orderList.toString() + "  =>" + calcPrize();
+		return "ShippingOrder [" +orderList.toString() + "  =>" + calcPrize();
 	}
 
+	
+	
 }

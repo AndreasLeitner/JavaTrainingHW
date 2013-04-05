@@ -1,7 +1,7 @@
 package at.edu.hti.shop.domain;
 
 
-public class CalcPrice1 implements ICalcPrice {
+public class PowerUserNoShippingFeeCalcPrice implements ICalcPrice {
 	
 	private static double SHIPPING_COSTS = 5;
 	

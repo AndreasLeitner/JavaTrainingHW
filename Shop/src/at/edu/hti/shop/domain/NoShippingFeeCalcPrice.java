@@ -21,7 +21,7 @@ package at.edu.hti.shop.domain;
  * @version $Revision$
  */
 
-public class NoShippingCostsCalcPrice implements ICalcPrice {
+public class NoShippingFeeCalcPrice implements ICalcPrice {
 
   public double calcPrice(Order order) {
     double sum = 0;
