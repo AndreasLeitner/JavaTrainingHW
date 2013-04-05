@@ -7,6 +7,11 @@ public class ToolProduct extends Product {
 	}
 	
 	@Override
+  public Category getCategory() {
+    return Category.TOOLS;
+  }
+
+  @Override
 	public String toString() {
 		return "ToolProduct [" + name + ", " + id + ", " + prize + ", " + weight + ", " + deliveryTime + "]";
 	}

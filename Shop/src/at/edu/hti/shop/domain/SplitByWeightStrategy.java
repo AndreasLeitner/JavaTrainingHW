@@ -1,6 +1,5 @@
 package at.edu.hti.shop.domain;
 
-import java.util.ArrayList;
 
 public class SplitByWeightStrategy implements ISplitStrategy {
 
@@ -10,13 +9,11 @@ public class SplitByWeightStrategy implements ISplitStrategy {
 		this.max_weight = max_weight;
 	}
 
-	@Override
-	public void split(Order order, ArrayList<OrderLine> orderLines) {
-		SubOrder currSubOrder = order.createSubOrder();
+	public void split(Order order) {
 		double subOrderWeight = 0;
 		double weight;
-		
-		for(OrderLine ol : orderLines){
+		SubOrder currSubOrder = order.createSubOrder();
+		for(OrderLine ol : order.getLines()){
 			weight = ol.getAmount() * ol.getProduct().getWeight();
 						
 			subOrderWeight += weight;
@@ -24,6 +21,7 @@ public class SplitByWeightStrategy implements ISplitStrategy {
 			if(subOrderWeight < max_weight || weight > max_weight){
 				currSubOrder.add(ol);
 			} else {
+			  System.out.println("Create new suborder because current suborderweight="+subOrderWeight);
 				currSubOrder = order.createSubOrder();
 				subOrderWeight = weight;
 				currSubOrder.add(ol);

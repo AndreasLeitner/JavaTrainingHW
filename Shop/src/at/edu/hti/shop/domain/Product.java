@@ -1,14 +1,21 @@
 package at.edu.hti.shop.domain;
 
 public class Product {
+  
+  public enum Category {
+    FOOD,
+    TOOLS,
+    NOTEBOOK,
+    MISC
+  }
+  
 	protected String name;
 	protected long id;
 	protected double prize;
 	protected int deliveryTime;
 	protected double weight;
-	
 
-	public Product( long id, String name, double prize, double weight, int deliveryTime ) {
+	public Product( long id, String name, double prize, double weight, int deliveryTime) {
 		super();
 		this.name = name;
 		this.id = id;
@@ -40,6 +47,10 @@ public class Product {
 	public void setDeliveryTime(int deliveryTime) {
 	  this.deliveryTime = deliveryTime;
   }
+	
+	public Category getCategory() {
+	  return Category.MISC;
+	}
 
 	@Override
 	public String toString() {

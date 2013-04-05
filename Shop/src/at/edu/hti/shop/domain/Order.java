@@ -2,26 +2,33 @@ package at.edu.hti.shop.domain;
 
 import java.util.ArrayList;
 
+import at.edu.hti.shop.domain.specification.ISpecification;
+
 public class Order {
 
 	protected ArrayList<OrderLine> orderList = new ArrayList<OrderLine>();
 	protected ICalcPrice priceStrategy;
-	private ISplitStrategy splitStrategy;
-	private ArrayList<SubOrder> subOrders;
+  private ISplitStrategy splitStrategy;
+  private ArrayList<SubOrder> subOrders;
 
-	public Order(){
-		
+	public Order() {
+	  subOrders = new ArrayList<SubOrder>();
 	}
 	
 	public Order(ICalcPrice calcPriceStrategy, ISplitStrategy splitStrategy){
 		this.priceStrategy = calcPriceStrategy;
 		this.splitStrategy = splitStrategy;
+    subOrders = new ArrayList<SubOrder>();
 	}
 	
-	public SubOrder createSubOrder(){
-		SubOrder subOrder = new SubOrder(priceStrategy);
-		subOrders.add(subOrder);
-		return subOrder;
+  public SubOrder createSubOrder(){
+    SubOrder subOrder = new SubOrder(priceStrategy);
+    subOrders.add(subOrder);
+    return subOrder;
+  }
+	
+	public ArrayList<OrderLine> getLines() {
+	  return orderList;
 	}
 	
 	public boolean add(OrderLine e) {
@@ -31,11 +38,6 @@ public class Order {
 		
 		orderList.add(e);
 		
-		// calculate each time the splitting again
-		if(this.getClass().getSimpleName().equals("Order")){
-			subOrders = new ArrayList<>();
-			splitStrategy.split(this,orderList);
-		}
 		return true;
 
 	}
@@ -58,26 +60,34 @@ public class Order {
 		if(remove){
 			orderList.remove(e);
 		}
-		
-		//calculate splitting again
-		subOrders = new ArrayList<>();
-		splitStrategy.split(this,orderList);
 	}
 
+	protected void split() {
+	  splitStrategy.split(this);
+	}
+	
 	
 	public double calcPrize() {
 		double price = 0;
+
+		split();
 		
-		for(SubOrder subOrder : subOrders){
-			price += priceStrategy.calcPrice(subOrder.orderList);
-		}
-			
+		price = priceStrategy.calcPrice(this);
+		
 		return price;
 	}
 
 	@Override
 	public String toString() {
-
-		return subOrders.toString() + " \n =>" + calcPrize();
+	  split();
+	  return subOrders.toString() + " \n Total price =>" + calcPrize();
+	}
+	
+	public double getWeight() {
+	  double weight = 0;
+	  for (OrderLine ol : orderList) {
+	    weight = weight+ol.getProduct().getWeight();
+	  }
+	  return weight;
 	}
 }

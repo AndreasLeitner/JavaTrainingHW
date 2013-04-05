@@ -8,7 +8,7 @@ public class SubOrder extends Order {
 	
 	public double calcPrize() {
 	
-	  return priceStrategy.calcPrice(orderList);
+	  return priceStrategy.calcPrice(this);
 	}
 	
 	@Override
